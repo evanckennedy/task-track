@@ -1,0 +1,52 @@
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/*  Utility Classes                                      */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+.flex {
+  display: flex;
+}
+
+.grid {
+  display: grid;
+}
+
+.center {
+  display: grid;
+  place-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-10 {
+  gap: 1rem;
+}
+
+.gap-20 {
+  gap: 2rem;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/*  Base                                                 */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+:root {
+  --app-background-dark: rgb(24, 23, 32);
+  --white: #fff;
+}
+
+body {
+  font-family: 'Noto Sans', 'Open Sans', arial, sans-serif;
+}
+
+.container {
+  width: min(100% - 30px, 1080px);
+  margin-inline: auto;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/*  Component                                            */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+h1 {
+  color: var(--white);
+}
