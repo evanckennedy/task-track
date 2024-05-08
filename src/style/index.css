@@ -22,6 +22,10 @@
   gap: 1rem;
 }
 
+.gap-15 {
+  gap: 1.5rem;
+}
+
 .gap-20 {
   gap: 2rem;
 }
@@ -32,7 +36,13 @@
 
 :root {
   --app-background-dark: rgb(24, 23, 32);
-  --white: #fff;
+  --white: #f5f5f6;
+  --secondary-backround: rgb(255 255 255 / 0.05);
+  --grey: #a9a9a9;
+  --red: #ff6347;
+  --blue: #6495ed;
+  --green: #4caf50;
+  --green-hover: #388e3c;
 }
 
 body {
@@ -42,11 +52,128 @@ body {
 .container {
   width: min(100% - 30px, 1080px);
   margin-inline: auto;
+  flex-direction: column;
+  align-items: center;
 }
 
+main {
+  padding-top: 6rem;
+}
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-/*  Component                                            */
+/*  Task input section                                   */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 h1 {
   color: var(--white);
+  text-align: center;
+  margin-bottom: 1.2rem;
+}
+
+form {
+  flex-direction: column;
+
+  input {
+    height: 3.9rem;
+    color: var(--white);
+    border-radius: 0.5rem;
+    transition: all 0.25s ease-in-out;
+  }
+}
+
+.user-input {
+  background-color: var(--secondary-backround);
+  padding: 0 1rem;
+  border: 1px solid var(--secondary-backround);
+  width: 32rem;
+
+  &:focus {
+    border-color: rgb(255 255 255 / 0.15);
+  }
+}
+
+.add-button {
+  background-color: var(--green);
+  width: 7.5rem;
+  font-weight: 500;
+  border: 1px solid var(--green);
+
+  &:hover {
+    background-color: var(--green-hover);
+  }
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/*  To-Do List                                           */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+.task-grid-container {
+  display: grid;
+  grid-template-columns: repeat(3, 27rem);
+  grid-auto-rows: 8rem;
+  margin-top: 4rem;
+}
+
+.task-controls * {
+  color: var(--grey);
+  font-size: 1.4rem;
+}
+
+.task-container {
+  background-color: var(--secondary-backround);
+  padding: 0 1.7rem;
+  border: 1px solid var(--secondary-backround);
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.task {
+  color: var(--white);
+  font-weight: 500;
+  font-size: 1.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.edit-delete * {
+  cursor: pointer;
+  transition: all 0.25s ease-in-out;
+}
+
+.edit-icon:hover {
+  * {
+    color: var(--blue);
+  }
+}
+
+.delete-icon:hover {
+  * {
+    color: var(--red);
+  }
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+/*  Media Queries                                        */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+
+@media (max-width: 900px) {
+  .task-grid-container {
+    grid-template-columns: repeat(2, 27rem);
+  }
+}
+
+@media (max-width: 590px) {
+  .task-grid-container {
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  .input-container {
+    flex-direction: column;
+  }
+  .input-container :nth-child(2) {
+    align-self: flex-end;
+  }
 }
