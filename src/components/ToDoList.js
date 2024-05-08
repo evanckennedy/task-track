@@ -14,7 +14,8 @@ function ToDoList() {
   }
 
   function deleteTask(index) {
-
+    const updatedTasks = tasks.filter((_, i) => i !== index);
+    setTasks(updatedTasks)
   }
 
   return (
@@ -46,8 +47,8 @@ function ToDoList() {
             <div className="task-controls flex justify-between">
               <span>May 7, 09:01 a.m</span>
               <div className="edit-delete flex gap-15">
-                <FaPen className='edit-icon'/>
-                <FaTrash className='delete-icon'/>
+                <FaPen className='edit-icon' />
+                <FaTrash className='delete-icon' onClick={() => deleteTask(index)}/>
               </div>
             </div>   
           </div>
