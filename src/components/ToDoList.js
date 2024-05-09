@@ -4,13 +4,25 @@ import { useState, useEffect } from "react";
 function ToDoList() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
+  const [editingTask, setEditingTask] = useState(null);
+  const [editingText, setEditingText] = useState('');
 
   function handleInputChange(event) {
-    setNewTask(event.target.value);
+    if (editingTask !== null) {
+      setEditingText(event.target.value)
+    } else {
+      setNewTask(event.target.value);
+    }
   }
 
-  function addTask() {
-    if (newTask !== '') {
+  function addOrSaveTask() {
+    if (editingTask !== null) {
+      const updatedTasks = [...tasks];
+      updatedTasks[editingTask] = editingText;
+      setTasks(updatedTasks);
+      setEditingTask(null);
+      setEditingText('');
+    } else if (newTask !== '') {
       setTasks(t => [newTask, ...t]);
       setNewTask('');
     }
@@ -55,15 +67,15 @@ function ToDoList() {
             <input 
               className="user-input" 
               type="text" 
-              placeholder="My new task"
-              value={newTask}
+              placeholder={editingTask !== null ? "Update task" : "My new task"}
+              value={editingTask !== null ? editingText : newTask}
               onChange={handleInputChange}
             />
             <input 
               className="add-button" 
               type="button" 
-              value="Add"
-              onClick={addTask}
+              value={editingTask !== null ? "Save" : "Add"}
+              onClick={addOrSaveTask}
             />
           </div>
         </form>
@@ -78,7 +90,7 @@ function ToDoList() {
                 <FaArrowUp className='up-icon' onClick={() => moveTaskUp(index)}/>
               </div>
               <div className="edit-delete flex gap-10">
-                <FaPen className='edit-icon' />
+                <FaPen className='edit-icon' onClick={() => {setEditingTask(index); setEditingText(task);}}/>
                 <FaTrash className='delete-icon' onClick={() => deleteTask(index)}/>
               </div>
             </div>   
