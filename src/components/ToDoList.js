@@ -45,7 +45,7 @@ function ToDoList() {
             <input 
               className="user-input" 
               type="text" 
-              placeholder="My new Task"
+              placeholder="My new task"
               value={newTask}
               onChange={handleInputChange}
             />
@@ -59,7 +59,6 @@ function ToDoList() {
         </form>
       </section>
       <section className="task-grid-container gap-15">
-        
         {tasks.map((task, index) => 
           <div key={index} className='task-container flex'>
             <p className='task'>{task}</p>
@@ -75,18 +74,6 @@ function ToDoList() {
             </div>   
           </div>
         )}
-        
-        {/* <div className='task-container flex'>
-          <p className='task'>Go shopping</p>
-          <div className="task-controls flex justify-between">
-            <span>May 7, 09:01 a.m</span>
-            <div className="edit-delete flex gap-15">
-              <FaPen className='edit-icon'/>
-              <FaTrash className='delete-icon'/>
-            </div>
-          </div>   
-        </div> */}
-
       </section>
     </>
   )
