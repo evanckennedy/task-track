@@ -102,6 +102,7 @@ form {
 
   &:hover {
     background-color: var(--green-hover);
+    border-color: var(--green-hover);
   }
 }
 
@@ -164,8 +165,6 @@ form {
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 /*  Media Queries                                        */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-
 @media (max-width: 900px) {
   .task-grid-container {
     grid-template-columns: repeat(2, 27rem);
