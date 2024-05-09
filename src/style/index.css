@@ -18,6 +18,10 @@
   justify-content: space-between;
 }
 
+.gap-5 {
+  gap: 0.5rem;
+}
+
 .gap-10 {
   gap: 1rem;
 }
@@ -134,9 +138,15 @@ form {
   text-overflow: ellipsis;
 }
 
-.edit-delete * {
+.edit-delete *, .up-down * {
   cursor: pointer;
   transition: all 0.25s ease-in-out;
+}
+
+.up-icon:hover, .down-icon:hover {
+  * {
+    color: var(--white);
+  }
 }
 
 .edit-icon:hover {
