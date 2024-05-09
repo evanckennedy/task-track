@@ -1,5 +1,5 @@
 import { FaPen, FaTrash, FaArrowUp, FaArrowDown } from 'react-icons/fa';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function ToDoList() {
   const [tasks, setTasks] = useState([]);
@@ -25,7 +25,7 @@ function ToDoList() {
     if (index > 0) {
       const updatedTasks = [...tasks];
       [updatedTasks[index], updatedTasks[index - 1]] = [updatedTasks[index - 1], updatedTasks[index]];
-      setTasks(updatedTasks);;
+      setTasks(updatedTasks);
     }
   }
 
@@ -36,6 +36,16 @@ function ToDoList() {
       setTasks(updatedTasks);;
     }
   }
+
+  useEffect(() => {
+    if (tasks.length > 0) {
+      tasks.length === 1 ? 
+        document.title = `Task Track (${tasks.length} Task)` :
+        document.title = `Task Track (${tasks.length} Tasks)`;
+    } else {
+      document.title = `Task Track`;
+    }
+  }, [tasks]);
 
   return (
     <>
