@@ -112,7 +112,6 @@ form {
 .task-grid-container {
   display: grid;
   grid-template-columns: repeat(3, 27rem);
-  grid-auto-rows: 8rem;
   margin-top: 4rem;
 }
 
@@ -123,11 +122,11 @@ form {
 
 .task-container {
   background-color: var(--secondary-backround);
-  padding: 0 1.7rem;
+  padding: 1.5rem 1.8rem;
   border: 1px solid var(--secondary-backround);
   flex-direction: column;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 1rem;
 }
 
 .task {
