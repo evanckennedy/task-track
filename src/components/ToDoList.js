@@ -1,11 +1,12 @@
 import { FaPen, FaTrash, FaArrowUp, FaArrowDown } from 'react-icons/fa';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 function ToDoList() {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
   const [editingTask, setEditingTask] = useState(null);
   const [editingText, setEditingText] = useState('');
+  const inputRef = useRef(null);
 
   function handleInputChange(event) {
     if (editingTask !== null) {
@@ -60,6 +61,12 @@ function ToDoList() {
     }
   }, [tasks]);
 
+  useEffect(() => {
+    if (editingTask !== null) {
+      inputRef.current.focus();
+    }
+  }, [editingTask]);
+
   return (
     <>
       <section className='center'>
@@ -71,6 +78,7 @@ function ToDoList() {
               placeholder={editingTask !== null ? "Update task" : "My new task"}
               value={editingTask !== null ? editingText : newTask}
               onChange={handleInputChange}
+              ref={inputRef}
             />
             <input 
               className="add-button" 
