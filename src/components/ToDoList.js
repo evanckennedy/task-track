@@ -15,7 +15,8 @@ function ToDoList() {
     }
   }
 
-  function addOrSaveTask() {
+  function addOrSaveTask(event) {
+    event.preventDefault();
     if (editingTask !== null) {
       const updatedTasks = [...tasks];
       updatedTasks[editingTask] = editingText;
@@ -62,7 +63,7 @@ function ToDoList() {
   return (
     <>
       <section className='center'>
-        <form className="flex">
+        <form className="flex" onSubmit={addOrSaveTask}>
           <div className='input-container flex gap-10'>
             <input 
               className="user-input" 
