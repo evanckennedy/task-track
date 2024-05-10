@@ -2,11 +2,33 @@ import { FaPen, FaTrash, FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import { useState, useEffect, useRef } from "react";
 
 function ToDoList() {
-  const [tasks, setTasks] = useState([]);
+  const savedTasks = localStorage.getItem('tasks');
+  const initialTasks = savedTasks ? JSON.parse(savedTasks) : [];
+  const [tasks, setTasks] = useState(initialTasks);
   const [newTask, setNewTask] = useState('');
   const [editingTask, setEditingTask] = useState(null);
   const [editingText, setEditingText] = useState('');
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
+
+  useEffect(() => {
+    if (tasks.length > 0) {
+      tasks.length === 1 ? 
+        document.title = `Task Track (${tasks.length} Task)` :
+        document.title = `Task Track (${tasks.length} Tasks)`;
+    } else {
+      document.title = `Task Track`;
+    }
+  }, [tasks]);
+
+  useEffect(() => {
+    if (editingTask !== null) {
+      inputRef.current.focus();
+    }
+  }, [editingTask]);
 
   function handleInputChange(event) {
     if (editingTask !== null) {
@@ -52,22 +74,6 @@ function ToDoList() {
       setTasks(updatedTasks);;
     }
   }
-
-  useEffect(() => {
-    if (tasks.length > 0) {
-      tasks.length === 1 ? 
-        document.title = `Task Track (${tasks.length} Task)` :
-        document.title = `Task Track (${tasks.length} Tasks)`;
-    } else {
-      document.title = `Task Track`;
-    }
-  }, [tasks]);
-
-  useEffect(() => {
-    if (editingTask !== null) {
-      inputRef.current.focus();
-    }
-  }, [editingTask]);
 
   return (
     <>
