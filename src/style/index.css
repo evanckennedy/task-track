@@ -118,6 +118,7 @@ form {
 .task-controls * {
   color: var(--grey);
   font-size: 1.4rem;
+  align-items: center;
 }
 
 .task-container {

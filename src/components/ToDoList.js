@@ -8,6 +8,9 @@ function ToDoList() {
   const [editingText, setEditingText] = useState('');
   const inputRef = useRef(null);
 
+  const date = new Date();
+  const formattedDate = date.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
+
   function handleInputChange(event) {
     if (editingTask !== null) {
       setEditingText(event.target.value)
@@ -97,6 +100,9 @@ function ToDoList() {
               <div className='up-down flex gap-5'>
                 <FaArrowDown className='down-icon' onClick={() => moveTaskDown(index)}/>
                 <FaArrowUp className='up-icon' onClick={() => moveTaskUp(index)}/>
+              </div>
+              <div>
+                <span>{formattedDate}</span>
               </div>
               <div className="edit-delete flex gap-10">
                 <FaPen className='edit-icon' onClick={() => {setEditingTask(index); setEditingText(task);}}/>
