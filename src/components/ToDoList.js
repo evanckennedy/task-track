@@ -1,111 +1,140 @@
 import { FaPen, FaTrash, FaArrowUp, FaArrowDown, FaCheck } from 'react-icons/fa';
-import { useState, useEffect, useRef } from "react";
+import { useReducer, useEffect, useRef } from "react";
+
+const tasksFromStorage = localStorage.getItem('tasks');
+const initialState = {
+  tasks: tasksFromStorage ? (JSON.parse(tasksFromStorage) || []) : [],
+  editingTask: null,
+  editingText: '',
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'add':
+      return { ...state, tasks: [{text: action.text, date: action.date }, ...state.tasks]};
+    case 'edit':
+      return { ...state, tasks: state.tasks.map((task, i) => i === action.index ? { text: action.text, date: action.date } : task)};
+    case 'complete':
+      return { ...state, tasks: state.tasks.map((task, i) => i === action.index ? { ...task, isCompleted: true } : task)};
+    case 'delete':
+      return { ...state, tasks: state.tasks.filter((_, i) => i !== action.index)};
+    case 'moveUp':
+      if (action.index > 0) {
+        const newState = [...state.tasks];
+        [newState[action.index], newState[action.index - 1]] = [newState[action.index - 1], newState[action.index]];
+        return { ...state, tasks: newState };
+      }
+      return state;
+    case 'moveDown':
+      if (action.index < state.tasks.length - 1) {
+        const newState = [...state.tasks];
+        [newState[action.index], newState[action.index + 1]] = [newState[action.index + 1], newState[action.index]];
+        return { ...state, tasks: newState };
+      }
+      return state;
+    case 'setEditingTask':
+      return { ...state, editingTask: action.index };
+    case 'setEditingText':
+      return { ...state, editingText: action.text };
+    default:
+      return { ...state, tasks: [] };
+  }
+}
 
 function ToDoList() {
-  const savedTasks = localStorage.getItem('tasks');
-  const initialTasks = savedTasks ? JSON.parse(savedTasks) : [];
-  
-  const [tasks, setTasks] = useState(initialTasks);
-  const [newTask, setNewTask] = useState('');
-  const [editingTask, setEditingTask] = useState(null);
-  const [editingText, setEditingText] = useState('');
-
+  const [state, dispatch] = useReducer(reducer, initialState);
   const inputRef = useRef(null);
 
   useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
+    localStorage.setItem('tasks', JSON.stringify(state.tasks));
+  }, [state.tasks]);
 
   useEffect(() => {
-    if (tasks.length > 0) {
-      tasks.length === 1 ? 
-        document.title = `Task Track (${tasks.length} Task)` :
-        document.title = `Task Track (${tasks.length} Tasks)`;
+    if (state.tasks.length > 0) {
+      state.tasks.length === 1 ? 
+        document.title = `Task Track (${state.tasks.length} Task)` :
+        document.title = `Task Track (${state.tasks.length} Tasks)`;
     } else {
       document.title = `Task Track`;
     }
-  }, [tasks]);
+  }, [state.tasks]);
 
   useEffect(() => {
-    if (editingTask !== null) {
+    if (state.editingTask !== null && inputRef.current) {
       inputRef.current.focus();
     }
-  }, [editingTask]);
+  }, [state.editingTask]);
 
   function handleInputChange(event) {
-    if (editingTask !== null) {
-      setEditingText(event.target.value)
-    } else {
-      setNewTask(event.target.value);
-    }
+    dispatch({ type: 'setEditingText', text: event.target.value })
   }
 
   function addOrSaveTask(event) {
-    event.preventDefault();
-    const date = new Date();
-    const formattedDate = date.toLocaleString('en-US', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true });
-    if (editingTask !== null) {
-      const updatedTasks = [...tasks];
-      updatedTasks[editingTask] = { text: editingText, date: formattedDate };
-      setTasks(updatedTasks);
-      setEditingTask(null);
-      setEditingText('');
-    } else if (newTask !== '') {
-      setTasks(t => [{ text: newTask, date: formattedDate }, ...t]);
-      setNewTask('');
-    }
+  event.preventDefault();
+  const date = new Date();
+  const formattedDate = date.toLocaleString('en-US', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true });
+  const inputValue = inputRef.current.value.trim(); // Remove leading and trailing white spaces
+  if (inputValue === '') {
+    // Input is empty, don't add or edit task
+    return;
   }
+  if (state.editingTask !== null) {
+    dispatch({ type: 'edit', text: inputValue, date: formattedDate, index: state.editingTask });
+    dispatch({ type: 'setEditingTask', index: null }); // Reset editingTask to null
+  } else {
+    dispatch({ type: 'add', text: inputValue, date: formattedDate });
+  }
+  dispatch({ type: 'setEditingText', text: '' }); // Reset editingText to an empty string
+}
 
   function completeTask(index) {
-    const updatedTasks = tasks.map((task, i) => i === index ? { ...task, isCompleted:true } : task);
-    setTasks(updatedTasks);
+    dispatch({ type: 'complete', index });
   }
 
   function deleteTask(index) {
-    const updatedTasks = tasks.filter((_, i) => i !== index);
-    setTasks(updatedTasks);
+    dispatch({ type: 'delete', index })
   }
 
   function moveTaskUp(index) {
-    if (index > 0) {
-      const updatedTasks = [...tasks];
-      [updatedTasks[index], updatedTasks[index - 1]] = [updatedTasks[index - 1], updatedTasks[index]];
-      setTasks(updatedTasks);
-    }
+    dispatch({ type: 'moveUp', index });
   }
 
   function moveTaskDown(index) {
-    if (index < tasks.length - 1) {
-      const updatedTasks = [...tasks];
-      [updatedTasks[index], updatedTasks[index + 1]] = [updatedTasks[index + 1], updatedTasks[index]];
-      setTasks(updatedTasks);;
-    }
+    dispatch({ type: 'moveDown', index })
+  }
+
+  function setEditingTask(index) {
+    dispatch({ type: 'setEditingTask', index });
+  }
+
+  function setEditingText(text) {
+    dispatch({ type: 'setEditingText', text });
   }
 
   return (
     <>
-      <section className='center'>
+       <section className='center'>
         <form className="flex" onSubmit={addOrSaveTask}>
           <div className='input-container flex gap-10'>
             <input 
               className="user-input" 
               type="text" 
-              placeholder={editingTask !== null ? "Update task" : "My new task"}
-              value={editingTask !== null ? editingText : newTask}
+              placeholder={state.editingTask !== null ? "Update task" : "My new task"}
               onChange={handleInputChange}
               ref={inputRef}
+              value={state.editingText} // Set the value to the text of the task being edited
             />
             <input 
               className="add-button" 
               type="button" 
-              value={editingTask !== null ? "Save" : "Add"}
+              value={state.editingTask !== null ? "Save" : "Add"}
               onClick={addOrSaveTask}
             />
           </div>
         </form>
       </section>
       <section className="task-grid-container gap-15">
-        {tasks.map((task, index) => 
+        {state.tasks.map((task, index) => 
           <div key={index} className={`task-container flex ${task.isCompleted ? 'completed' : ''}`}>
             <p className={`task ${task.isCompleted ? 'line-through' : ''}`}>{task.text}</p>
             <div className="task-controls flex justify-between">
