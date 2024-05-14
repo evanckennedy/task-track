@@ -47,6 +47,7 @@
   --blue: #6495ed;
   --green: #4caf50;
   --green-hover: #388e3c;
+  --active-task-color: #00bfff;
 }
 
 body {
@@ -117,8 +118,16 @@ form {
 
 .task-controls * {
   color: var(--grey);
-  font-size: 1.4rem;
   align-items: center;
+}
+
+.up-down, .edit-delete {
+  font-size: 1.4rem;
+}
+
+.date {
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .task-container {
@@ -128,6 +137,7 @@ form {
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
+  border-bottom: 2px solid var(--active-task-color);
 }
 
 .task {
@@ -160,6 +170,20 @@ form {
   * {
     color: var(--red);
   }
+}
+
+.complete-icon:hover {
+  * {
+    color: var(--green);
+  }
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.completed {
+  border-color: var(--green);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - */

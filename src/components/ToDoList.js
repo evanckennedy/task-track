@@ -1,4 +1,4 @@
-import { FaPen, FaTrash, FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import { FaPen, FaTrash, FaArrowUp, FaArrowDown, FaCheck } from 'react-icons/fa';
 import { useState, useEffect, useRef } from "react";
 
 function ToDoList() {
@@ -41,7 +41,7 @@ function ToDoList() {
   function addOrSaveTask(event) {
     event.preventDefault();
     const date = new Date();
-    const formattedDate = date.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true });
+    const formattedDate = date.toLocaleString('en-US', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true });
     if (editingTask !== null) {
       const updatedTasks = [...tasks];
       updatedTasks[editingTask] = { text: editingText, date: formattedDate };
@@ -107,9 +107,10 @@ function ToDoList() {
                 <FaArrowUp className='up-icon' onClick={() => moveTaskUp(index)}/>
               </div>
               <div>
-                <span>{task.date}</span>
+                <span className='date'>{task.date}</span>
               </div>
-              <div className="edit-delete flex gap-10">
+              <div className="edit-delete flex gap-5">
+                <FaCheck className='complete-icon'/>
                 <FaPen className='edit-icon' onClick={() => {setEditingTask(index); setEditingText(task.text);}}/>
                 <FaTrash className='delete-icon' onClick={() => deleteTask(index)}/>
               </div>
