@@ -10,6 +10,7 @@ You can access the project live [here](https://evanckennedy.github.io/task-track
 - Edit existing tasks
 - Delete tasks
 - Reorder tasks
+- Complete tasks
 - Tasks are saved locally, so they persist even after refreshing the page
 
 ## Getting Started
