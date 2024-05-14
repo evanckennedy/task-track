@@ -1,6 +1,7 @@
 import { FaPen, FaTrash, FaArrowUp, FaArrowDown, FaCheck } from 'react-icons/fa';
 import { useReducer, useEffect, useRef } from "react";
 
+// Retrieve tasks from local storage or initialize to an empty array
 const tasksFromStorage = localStorage.getItem('tasks');
 const initialState = {
   tasks: tasksFromStorage ? (JSON.parse(tasksFromStorage) || []) : [],
@@ -8,6 +9,7 @@ const initialState = {
   editingText: '',
 };
 
+// Reducer function to handle state changes
 function reducer(state, action) {
   switch (action.type) {
     case 'add':
@@ -45,6 +47,7 @@ function ToDoList() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const inputRef = useRef(null);
 
+  // Effect to store tasks in local storage whenever they change
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(state.tasks));
   }, [state.tasks]);
@@ -59,6 +62,7 @@ function ToDoList() {
     }
   }, [state.tasks]);
 
+  // Effect to focus the input field when a task is being edited
   useEffect(() => {
     if (state.editingTask !== null && inputRef.current) {
       inputRef.current.focus();
