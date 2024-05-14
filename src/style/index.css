@@ -140,6 +140,14 @@ form {
   border-bottom: 2px solid var(--active-task-color);
 }
 
+.completed {
+  border-bottom-color: var(--green);
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
 .task {
   color: var(--white);
   font-weight: 500;
@@ -176,14 +184,6 @@ form {
   * {
     color: var(--green);
   }
-}
-
-.line-through {
-  text-decoration: line-through;
-}
-
-.completed {
-  border-color: var(--green);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - */

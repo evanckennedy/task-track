@@ -4,10 +4,12 @@ import { useState, useEffect, useRef } from "react";
 function ToDoList() {
   const savedTasks = localStorage.getItem('tasks');
   const initialTasks = savedTasks ? JSON.parse(savedTasks) : [];
+  
   const [tasks, setTasks] = useState(initialTasks);
   const [newTask, setNewTask] = useState('');
   const [editingTask, setEditingTask] = useState(null);
   const [editingText, setEditingText] = useState('');
+
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -52,6 +54,11 @@ function ToDoList() {
       setTasks(t => [{ text: newTask, date: formattedDate }, ...t]);
       setNewTask('');
     }
+  }
+
+  function completeTask(index) {
+    const updatedTasks = tasks.map((task, i) => i === index ? { ...task, isCompleted:true } : task);
+    setTasks(updatedTasks);
   }
 
   function deleteTask(index) {
@@ -99,8 +106,8 @@ function ToDoList() {
       </section>
       <section className="task-grid-container gap-15">
         {tasks.map((task, index) => 
-          <div key={index} className='task-container flex'>
-            <p className='task'>{task.text}</p>
+          <div key={index} className={`task-container flex ${task.isCompleted ? 'completed' : ''}`}>
+            <p className={`task ${task.isCompleted ? 'line-through' : ''}`}>{task.text}</p>
             <div className="task-controls flex justify-between">
               <div className='up-down flex gap-5'>
                 <FaArrowDown className='down-icon' onClick={() => moveTaskDown(index)}/>
@@ -110,7 +117,7 @@ function ToDoList() {
                 <span className='date'>{task.date}</span>
               </div>
               <div className="edit-delete flex gap-5">
-                <FaCheck className='complete-icon'/>
+                <FaCheck className='complete-icon' onClick={() => {completeTask(index)}}/>
                 <FaPen className='edit-icon' onClick={() => {setEditingTask(index); setEditingText(task.text);}}/>
                 <FaTrash className='delete-icon' onClick={() => deleteTask(index)}/>
               </div>
